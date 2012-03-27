@@ -1,22 +1,25 @@
-// Modal Indicator View
-// v1.0
-// ============================================================================
-// Ti.App.fireEvent('show_indicator',{message:L('saving'),loader:true/false});
-// Ti.App.fireEvent('newMess_indicator',{message:L('message')});
-// Ti.App.fireEvent('hide_indicator');
-// ============================================================================
+/*
+Modal Indicator View - ©BSoft&Co 2012
+-------------------------------------
+v1.01
+===============================================================================
+Ti.App.fireEvent('show_indicator',{message:L('saving'),loader:true/false});
+Ti.App.fireEvent('newMess_indicator',{message:L('message')});
+Ti.App.fireEvent('hide_indicator');
+===============================================================================
+*/
 
 // ============================================================================
 function Indicator() {
-    this.indWin = null;
-    this.actInd = null;
-    this._withLoader = true;
+    var indWin = null;
+    var actInd = null;
+    var _withLoader = true;
 
     this.showIndicator = function(messageTxt,withLoader) {
-        this._withLoader = withLoader;
+        _withLoader = withLoader;
 
         // window container
-        this.indWin = Titanium.UI.createWindow({
+        indWin = Titanium.UI.createWindow({
             height:'100%',
             width:'100%'
         });
@@ -29,17 +32,17 @@ function Indicator() {
             borderRadius:10,
             opacity:0.8
         });
-        this.indWin.add(indView);
+        indWin.add(indView);
 
-        if (this._withLoader) {
+        if (_withLoader) {
             // loading indicator
-            this.actInd = Titanium.UI.createActivityIndicator({
+            actInd = Titanium.UI.createActivityIndicator({
                 style:Titanium.UI.iPhone.ActivityIndicatorStyle.BIG,
                 height:40,
                 width:40,
                 top:30
             });
-            indView.add(this.actInd);
+            indView.add(actInd);
         }
                 
         // message
@@ -54,28 +57,28 @@ function Indicator() {
         });
 
         indView.add(message);
-        this.indWin.open();
-        if (this._withLoader) {
-            this.actInd.show();
+        indWin.open();
+        if (_withLoader) {
+            actInd.show();
         } else {
             message.top = 20;    
         }    
     }
 
     this.hideIndicator = function() {
-        if (this._withLoader) { 
-            this.actInd.hide();
+        if (_withLoader) { 
+            actInd.hide();
         }    
-        this.indWin.close({opacity:0,duration:500}, function() {
-            this.indWin = null;
+        indWin.close({opacity:0,duration:500}, function() {
+            indWin = null;
         });
     }
 
     this.changeMessage = function(newMess) {
-        if (this._withLoader) { 
-            this.indWin.children[0].children[1].text = newMess;
+        if (_withLoader) { 
+            indWin.children[0].children[1].text = newMess;
         } else {
-            this.indWin.children[0].children[0].text = newMess;
+            indWin.children[0].children[0].text = newMess;
         }
     }        
 }
@@ -98,6 +101,7 @@ Titanium.App.addEventListener('show_indicator', function(e) {
 Titanium.App.addEventListener('hide_indicator', function(e) {
 	Ti.API.info("IN HIDE INDICATOR");
 	instIndi.hideIndicator();
+    instIndi = null;
 });
 Titanium.App.addEventListener('newMess_indicator', function(e) {
     Ti.API.info("IN CHANGE INDICATOR MESS");

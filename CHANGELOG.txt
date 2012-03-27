@@ -1,1 +1,8 @@
-Place your change log text here.  This file will be incorporated with your app at package time.
+Modal Indicator View - ©BSoft&Co 2012
+-------------------------------------
+
+v1.01
+    pass some var in private mode
+
+v1.0
+    Init release
