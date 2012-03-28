@@ -1,11 +1,11 @@
 /*
 Modal Indicator View - ©BSoft&Co 2012
 -------------------------------------
-v1.01
+v1.02
 ===============================================================================
-Ti.App.fireEvent('show_indicator',{message:L('saving'),loader:true/false});
-Ti.App.fireEvent('newMess_indicator',{message:L('message')});
-Ti.App.fireEvent('hide_indicator');
+Ti.App.fireEvent('show_indicator',{nameid:'objectName',message:L('saving'),loader:true/false});
+Ti.App.fireEvent('newMess_indicator',{nameid:'objectName',message:L('message')});
+Ti.App.fireEvent('hide_indicator',{nameid:'objectName'});
 ===============================================================================
 */
 
@@ -21,10 +21,11 @@ function Indicator() {
         // window container
         indWin = Titanium.UI.createWindow({
             height:'100%',
-            width:'100%'
+            width:'100%',
+            opacity:0.1
         });
 
-        // black view
+        // opaque view container
         var indView = Titanium.UI.createView({
             height:170,
             width:170,
@@ -34,17 +35,6 @@ function Indicator() {
         });
         indWin.add(indView);
 
-        if (_withLoader) {
-            // loading indicator
-            actInd = Titanium.UI.createActivityIndicator({
-                style:Titanium.UI.iPhone.ActivityIndicatorStyle.BIG,
-                height:40,
-                width:40,
-                top:30
-            });
-            indView.add(actInd);
-        }
-                
         // message
         var message = Titanium.UI.createLabel({
             text:messageTxt,
@@ -55,31 +45,39 @@ function Indicator() {
             top:75,
             textAlign:'center'
         });
-
         indView.add(message);
-        indWin.open();
+
+        if (_withLoader) {
+            // loading indicator
+            actInd = Titanium.UI.createActivityIndicator({
+                style:Titanium.UI.iPhone.ActivityIndicatorStyle.BIG,
+                height:40,
+                width:40,
+                top:25
+            });
+            indView.add(actInd);
+        }
+
+        indWin.open({opacity:1,duration:500});
         if (_withLoader) {
             actInd.show();
         } else {
-            message.top = 20;    
+            message.top = 25;    
         }    
     }
 
     this.hideIndicator = function() {
         if (_withLoader) { 
             actInd.hide();
+            actInd = null;
         }    
-        indWin.close({opacity:0,duration:500}, function() {
+        indWin.close({opacity:0,duration:750}, function() {
             indWin = null;
         });
     }
 
     this.changeMessage = function(newMess) {
-        if (_withLoader) { 
-            indWin.children[0].children[1].text = newMess;
-        } else {
-            indWin.children[0].children[0].text = newMess;
-        }
+        indWin.children[0].children[0].text = newMess;
     }        
 }
 // ============================================================================
@@ -88,23 +86,23 @@ function Indicator() {
 //
 // Add global event handlers to hide/show custom indicator
 //
-var instIndi;
+var instIndi = [];
 Titanium.App.addEventListener('show_indicator', function(e) {
-	Ti.API.info("IN SHOW INDICATOR");
+    Ti.API.info("IN SHOW INDICATOR");
     var mess = L('Loading')+'...';
     var showLoader = true;
     if (e.message != null) { mess = e.message;}
     if (e.loader != null) { showLoader = e.loader;}
-    instIndi = new Indicator();
-	instIndi.showIndicator(mess,showLoader);
+    instIndi[e.nameid] = new Indicator();
+    instIndi[e.nameid].showIndicator(mess,showLoader);
 });
 Titanium.App.addEventListener('hide_indicator', function(e) {
-	Ti.API.info("IN HIDE INDICATOR");
-	instIndi.hideIndicator();
-    instIndi = null;
+    Ti.API.info("IN HIDE INDICATOR");
+    instIndi[e.nameid].hideIndicator();
+    instIndi[e.nameid] = null;
 });
 Titanium.App.addEventListener('newMess_indicator', function(e) {
     Ti.API.info("IN CHANGE INDICATOR MESS");
-    instIndi.changeMessage(e.message);
+    instIndi[e.nameid].changeMessage(e.message);
 });
 // ============================================================================

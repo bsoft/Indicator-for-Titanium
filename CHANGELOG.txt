@@ -1,8 +1,13 @@
 Modal Indicator View - ©BSoft&Co 2012
 -------------------------------------
 
+v1.02
+    + add new mandadory var 'nameid' to all fireevent parameters. nameid is the unique name of the object instance. So, Indicator can now handle multi windows at the same time.
+	+ adding the message object before the loading indicator. Easier to change it after ;)
+	+ open modal view with opacity animation
+
 v1.01
-    pass some var in private mode
+	+ pass some var in private mode
 
 v1.0
-    Init release
+	Init release
