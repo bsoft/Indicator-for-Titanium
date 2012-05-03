@@ -1,7 +1,7 @@
 /*
 Modal Indicator View - ©BSoft&Co 2012
 -------------------------------------
-v1.02
+v1.03.1
 ===============================================================================
 Ti.App.fireEvent('show_indicator',{nameid:'objectName',message:L('saving'),loader:true/false});
 Ti.App.fireEvent('newMess_indicator',{nameid:'objectName',message:L('message')});
@@ -39,8 +39,8 @@ function Indicator() {
         var message = Titanium.UI.createLabel({
             text:messageTxt,
             color:'#fff',
-            width:'auto',
-            height:'auto',
+            width:Ti.UI.SIZE || 'auto',
+            height:Ti.UI.SIZE || 'auto',
             font:{fontSize:18,fontWeight:'bold',fontFamily:'Chalkboard'},
             top:75,
             textAlign:'center'

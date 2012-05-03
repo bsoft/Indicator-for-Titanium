@@ -1,6 +1,8 @@
 Modal Indicator View - ©BSoft&Co 2012
 -------------------------------------
 
+v1.03.1
+    + Change 'auto' to Ti.UI.SIZE || auto for label message (Ti SDK 2 more compatible)
 v1.02
     + add new mandadory var 'nameid' to all fireevent parameters. nameid is the unique name of the object instance. So, Indicator can now handle multi windows at the same time.
 	+ adding the message object before the loading indicator. Easier to change it after ;)
