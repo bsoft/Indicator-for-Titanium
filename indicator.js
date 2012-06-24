@@ -1,7 +1,7 @@
 /*
 Modal Indicator View - ©BSoft&Co 2012
 -------------------------------------
-v1.03.1
+v1.03.2
 ===============================================================================
 Ti.App.fireEvent('show_indicator',{nameid:'objectName',message:L('saving'),loader:true/false});
 Ti.App.fireEvent('newMess_indicator',{nameid:'objectName',message:L('message')});
@@ -11,9 +11,7 @@ Ti.App.fireEvent('hide_indicator',{nameid:'objectName'});
 
 // ============================================================================
 function Indicator() {
-    var indWin = null;
-    var actInd = null;
-    var _withLoader = true;
+    var indWin = null, actInd = null, _withLoader = true;
 
     this.showIndicator = function(messageTxt,withLoader) {
         _withLoader = withLoader;
