@@ -1,9 +1,9 @@
 /*
 Modal Indicator View - ©BSoft&Co 2012
 -------------------------------------
-v1.03.2
+v1.04.3
 ===============================================================================
-Ti.App.fireEvent('show_indicator',{nameid:'objectName',message:L('saving'),loader:true/false});
+Ti.App.fireEvent('show_indicator',{nameid:'objectName',message:L('saving'),loader:true/false, 'fontSize':15});
 Ti.App.fireEvent('newMess_indicator',{nameid:'objectName',message:L('message')});
 Ti.App.fireEvent('hide_indicator',{nameid:'objectName'});
 ===============================================================================
@@ -13,13 +13,14 @@ Ti.App.fireEvent('hide_indicator',{nameid:'objectName'});
 function Indicator() {
     var indWin = null, actInd = null, _withLoader = true;
 
-    this.showIndicator = function(messageTxt,withLoader) {
+    this.showIndicator = function(messageTxt, withLoader, fontSize) {
         _withLoader = withLoader;
 
         // window container
         indWin = Titanium.UI.createWindow({
             height:'100%',
             width:'100%',
+            zIndex: 10000,
             opacity:0.1
         });
 
@@ -39,8 +40,8 @@ function Indicator() {
             color:'#fff',
             width:Ti.UI.SIZE || 'auto',
             height:Ti.UI.SIZE || 'auto',
-            font:{fontSize:18,fontWeight:'bold',fontFamily:'Chalkboard'},
-            top:75,
+            font:{'fontSize':fontSize,'fontWeight':'bold',fontFamily:'AvenirNext-DemiBoldItalic'},
+            top:70,
             textAlign:'center'
         });
         indView.add(message);
@@ -62,22 +63,28 @@ function Indicator() {
         } else {
             message.top = 25;    
         }    
-    }
+    };
 
     this.hideIndicator = function() {
         if (_withLoader) { 
             actInd.hide();
             actInd = null;
         }    
+        setTimeout(function () {
+            try {
+                indWin.close();    
+            }
+            catch (e) {}
+        }, 1000);
         indWin.close({opacity:0,duration:750}, function() {
             indWin = null;
         });
-    }
+    };
 
     this.changeMessage = function(newMess) {
         indWin.children[0].children[0].text = newMess;
-    }        
-}
+    };        
+};
 // ============================================================================
 
 // ============================================================================
@@ -89,10 +96,12 @@ Titanium.App.addEventListener('show_indicator', function(e) {
     Ti.API.info("IN SHOW INDICATOR");
     var mess = L('Loading')+'...';
     var showLoader = true;
+    var fontSize = 16;
     if (e.message != null) { mess = e.message;}
     if (e.loader != null) { showLoader = e.loader;}
+    if (e.fontSize != null) { fontSize = e.fontSize;}
     instIndi[e.nameid] = new Indicator();
-    instIndi[e.nameid].showIndicator(mess,showLoader);
+    instIndi[e.nameid].showIndicator(mess,showLoader,fontSize);
 });
 Titanium.App.addEventListener('hide_indicator', function(e) {
     Ti.API.info("IN HIDE INDICATOR");

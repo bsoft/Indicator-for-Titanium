@@ -1,6 +1,7 @@
 Modal Indicator View - ©BSoft&Co 2012
 -------------------------------------
-
+v1.04.3
+    ± Add a setTimeout on hideIndicator
 v1.03.1
     + Change 'auto' to Ti.UI.SIZE || auto for label message (Ti SDK 2 more compatible)
 v1.02
